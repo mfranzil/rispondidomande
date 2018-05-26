@@ -5,12 +5,15 @@
  */
 package rispondidomande;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
+import java.util.Locale;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.Scene;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.StackPane;
@@ -22,12 +25,12 @@ import javafx.stage.Stage;
  */
 public class DomandaBox extends TextArea {
 
-    public static final int numerodomande = 35;
+    public static final int numerodomande = 12;
 
     private int domandacorrente;
     private LinkedList<Domanda> domande;
 
-    public DomandaBox(ProgressBar progress) {
+    public DomandaBox(BarraProgresso progress) {
         domande = new LinkedList<>();
         domandacorrente = -1;
 
@@ -46,7 +49,8 @@ public class DomandaBox extends TextArea {
                 Logger.getLogger(DomandaBox.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        next(progress);
+
+        progress.next(this);
     }
 
     public void changeQuestion(boolean isNext) {
@@ -59,37 +63,45 @@ public class DomandaBox extends TextArea {
             if (!tmp.getRisposta_d().equals("") || tmp.getRisposta_d() == null) {
                 appendText("\nd) " + tmp.getRisposta_d());
             }
+            if (!tmp.getRisposta_e().equals("") || tmp.getRisposta_e() == null) {
+                appendText("\ne) " + tmp.getRisposta_e());
+            }
+            if (!tmp.getRisposta_f().equals("") || tmp.getRisposta_f() == null) {
+                appendText("\nf) " + tmp.getRisposta_f());
+            }
         } catch (NullPointerException e) {
-            System.out.println("No D response in this question");
+            System.out.println("Missing response in this question");
         }
-    }
 
-    public void previous(ProgressBar progress) {
-        if (domandacorrente > 0) {
-            progress.setProgress(progress.getProgress() - (1.0 / DomandaBox.numerodomande));
-            changeQuestion(false);
+        try {
+            InputStream in = getClass().getResourceAsStream("domande/" + tmp.getId() + ".code");
+            Locale loc = new Locale("it", "IT");
+            Scanner scanner = new Scanner(in);
+            scanner.useLocale(loc);
+            appendText("\n\n\n");
+            while (scanner.hasNext()) {
+                appendText(new String(scanner.nextLine().getBytes(), "utf-8") + "\n");
+            }
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(DomandaBox.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex) {
+            System.out.println("File has no correlated attachment");
         }
-    }
-
-    public void next(ProgressBar progress) {
-        if (domandacorrente < domande.size() - 1) {
-            progress.setProgress(progress.getProgress() + (1.0 / DomandaBox.numerodomande));
-            changeQuestion(true);
-        }
+        // Posiziono la TextArea in alto
+        positionCaret(0);
     }
 
     public void processQuestion(ToggleGroup send_buttons) {
         Domanda current = domande.get(domandacorrente);
-        if (current.getRispostadata() == null) {
-            String user_answer = null;
-            try {
-                user_answer = send_buttons.getSelectedToggle().getUserData().toString();
-            } catch (NullPointerException e) {
-                user_answer = null;
-            }
-            current.setRispostadata(user_answer);
+        String user_answer = null;
+        try {
+            user_answer = send_buttons.getSelectedToggle().getUserData().toString();
+            System.out.println("User answer:" + user_answer);
+        } catch (NullPointerException e) {
+            user_answer = null;
+            System.out.println("No user response found");
         }
-
+        current.setRispostadata(user_answer);
     }
 
     public void getResults(boolean showMark) {

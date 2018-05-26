@@ -19,11 +19,11 @@ import java.util.Scanner;
  */
 public class Domanda {
 
-    private String domanda, risposta_a, risposta_b, risposta_c, risposta_d;
+    private String domanda, risposta_a, risposta_b, risposta_c, risposta_d, risposta_e, risposta_f;
     private String rispostadata, rispostacorretta;
     private int id, numerorisposte;
 
-    private static int domandetotali = 164;
+    private static int domandetotali = 36;
     private static final ArrayList<Integer> domandedisponibili = new ArrayList<>();
 
     public Domanda() throws UnsupportedEncodingException {
@@ -42,11 +42,25 @@ public class Domanda {
         risposta_a = new String(scanner.nextLine().getBytes(), "utf-8");
         risposta_b = new String(scanner.nextLine().getBytes(), "utf-8");
         risposta_c = new String(scanner.nextLine().getBytes(), "utf-8");
+        
         try {
             risposta_d = new String(scanner.nextLine().getBytes(), "utf-8");
         } catch (Exception e) {
             risposta_d = null;
         }
+        
+        try {
+            risposta_e = new String(scanner.nextLine().getBytes(), "utf-8");
+        } catch (Exception e) {
+            risposta_e = null;
+        }
+        
+        try {
+            risposta_f = new String(scanner.nextLine().getBytes(), "utf-8");
+        } catch (Exception e) {
+            risposta_f = null;
+        }
+        
         rispostadata = null;
     }
 
@@ -54,7 +68,7 @@ public class Domanda {
         for (int i = 0; i < domandetotali; i++) {
             domandedisponibili.add(i);
         }
-        Collections.shuffle(domandedisponibili, new Random());
+        Collections.shuffle(domandedisponibili);
     }
 
     public boolean checkCorrect() {
@@ -90,6 +104,14 @@ public class Domanda {
         return risposta_d;
     }
 
+    public String getRisposta_e() {
+        return risposta_e;
+    }
+
+    public String getRisposta_f() {
+        return risposta_f;
+    }       
+
     public int getId() {
         return id;
     }
@@ -106,26 +128,6 @@ public class Domanda {
         this.rispostadata = rispostadata;
     }
 
-    private void setRispostadataInt(String rispostadata) {
-        switch (Integer.parseInt(rispostadata)) {
-            case 1:
-                this.rispostadata = "A";
-                break;
-            case 2:
-                this.rispostadata = "B";
-                break;
-            case 3:
-                this.rispostadata = "C";
-                break;
-            case 4:
-                this.rispostadata = "D";
-                break;
-            default:
-                this.rispostadata = rispostadata;
-                break;
-        }
-    }
-
     private void setRispostacorretta(int rispostacorretta) {
         switch (rispostacorretta) {
             case 1:
@@ -139,6 +141,12 @@ public class Domanda {
                 break;
             case 4:
                 this.rispostacorretta = "D";
+                break;
+            case 5:
+                this.rispostacorretta = "E";
+                break;
+            case 6:
+                this.rispostacorretta = "F";
                 break;
             default:
                 this.rispostacorretta = String.valueOf(rispostacorretta);
