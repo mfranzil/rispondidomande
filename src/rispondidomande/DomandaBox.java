@@ -12,11 +12,8 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 /**
  *
@@ -24,12 +21,14 @@ import javafx.stage.Stage;
  */
 public class DomandaBox extends TextArea {
 
-    public static final int numerodomande = 12;
-
     private int domandacorrente;
     private LinkedList<Domanda> domande;
 
-    public DomandaBox(BarraProgresso progress) {
+    /**
+     * Costruttore standard. Ritorna una TextArea dove verranno scritte le
+     * domande.
+     */
+    public DomandaBox() {
         domande = new LinkedList<>();
         domandacorrente = -1;
 
@@ -41,39 +40,45 @@ public class DomandaBox extends TextArea {
         setMaxWidth(750);
         setMaxHeight(750);
 
-        Domanda.setAvailableQuestions();
-
-        for (int i = 0; i < numerodomande; i++) {
+        for (int i = 0; i < Common.MAXDOMANDE; i++) {
             try {
                 Domanda tmp = new Domanda();
-                System.out.println(tmp);
                 domande.add(tmp);
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(DomandaBox.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
-        progress.next(this);
+        appendText("Ciao! Per iniziare, premi il pulsante Successivo. Il test è composto da " + Common.MAXDOMANDE + " domande.\n\n"
+                + "Il bottone Mostra risultati mostrerà soltanto la lista di domande e risposte date.\n\n"
+                + "Quando l'opzione Voti e risposte corrette, verranno mostrate le risposte corrette e il voto totale.");
     }
 
-    public void changeQuestion(boolean isNext) {
+    /**
+     *
+     * @param isNext Cambio alla domanda successiva o meno
+     * @return Il numero di bottoni che si rendono necessari per la domanda in
+     * questione.
+     */
+    public int changeQuestion(boolean isNext) {
         clear();
+
         Domanda tmp = domande.get(isNext ? ++domandacorrente : --domandacorrente);
         appendText(tmp.getDomanda() + "\n");
 
-        for (int i = 1; i <= Domanda.rispostemassime; i++) {
+        for (int i = 1; i <= tmp.getNumerorisposte(); i++) {
             try {
                 String risposta = tmp.getRisposte().get(i - 1);
                 if (!risposta.equals("")) {
-                    appendText("\n" + RispondiDomande.intToLetter(i, false) + ") " + risposta);
+                    appendText("\n" + Common.intToLetter(i, false) + ") " + risposta);
                 }
             } catch (NullPointerException e) {
-                System.err.println("Missing response in this question");
+                System.err.println("Missing response for question " + domandacorrente);
             }
         }
 
         try {
-            InputStream in = getClass().getResourceAsStream("domande/" + tmp.getId() + ".code");
+            InputStream in = getClass().getResourceAsStream(Common.PATH + tmp.getId() + ".code");
             Locale loc = new Locale("it", "IT");
             Scanner scanner = new Scanner(in);
             scanner.useLocale(loc);
@@ -85,40 +90,50 @@ public class DomandaBox extends TextArea {
             System.err.println("Encoding error!");
             Logger.getLogger(DomandaBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex) {
-            System.err.println("File has no correlated attachment");
+            System.out.println("File has no correlated attachment for question" + domandacorrente);
         }
-        
+
         // Posiziono la TextArea in alto
         positionCaret(0);
+
+        return tmp.getNumerorisposte();
     }
 
+    /**
+     * Metodo che memorizza nella Domanda corrente la risposta data dall'utente
+     *
+     * @param send_buttons Il ToggleGroup da cui prendere il bottone
+     * selezionato.
+     */
     public void processQuestion(ToggleGroup send_buttons) {
-        Domanda current = domande.get(domandacorrente);
-        String user_answer = null;
-        try {
-            user_answer = send_buttons.getSelectedToggle().getUserData().toString();
-            System.out.println("User answer:" + user_answer);
-        } catch (NullPointerException e) {
-            user_answer = null;
-            System.err.println("No user response found");
+        if (domandacorrente > -1 && domandacorrente < Common.MAXDOMANDE) {
+            Domanda current = domande.get(domandacorrente);
+            String user_answer = null;
+            try {
+                user_answer = send_buttons.getSelectedToggle().getUserData().toString();
+                System.out.println("User answer:" + user_answer + " for question" + domandacorrente);
+            } catch (NullPointerException e) {
+                user_answer = null;
+                System.out.println("No user response found for question" + domandacorrente);
+            }
+            current.setRispostadata(user_answer);
         }
-        current.setRispostadata(user_answer);
     }
 
+    /**
+     * Metodo che mostra la finestra dei risultati.
+     *
+     * @param showMark Mostra anche il voto totale e le risposte giuste?
+     */
     public void getResults(boolean showMark) {
         ResultWindow results = new ResultWindow(domande, showMark);
         results.show();
     }
 
-    public String getPreviousAnswer() {
-        String res = domande.get(domandacorrente).getRispostadata();
-        if (res != null) {
-            return res;
-        } else {
-            return "Z";
-        }
-    }
-
+    /**
+     *
+     * @return
+     */
     public int getDomandacorrente() {
         return domandacorrente;
     }

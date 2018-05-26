@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import static rispondidomande.DomandaBox.numerodomande;
 
 /**
  *
@@ -18,6 +17,11 @@ import static rispondidomande.DomandaBox.numerodomande;
  */
 public class ResultWindow extends Stage {
 
+    /**
+     *
+     * @param domande
+     * @param showMark
+     */
     public ResultWindow(LinkedList<Domanda> domande, boolean showMark) {
         StackPane printPane = new StackPane();
         Scene printScene = new Scene(printPane, 300, 300);
@@ -30,7 +34,7 @@ public class ResultWindow extends Stage {
                 correctcounter++;
             }
             
-            txt.appendText("Domanda " + (i + 1) + "/" + numerodomande + " (ID " + a.getId() + "): " 
+            txt.appendText("Domanda " + (i + 1) + "/" + Common.MAXDOMANDE + " (ID " + a.getId() + "): " 
                     + a.getDomanda() + "\n" + "Risposta data: " +
                     (a.getRispostadata() == null ? "Nessuna" : a.getRispostadata()) + "\n");
             
@@ -43,7 +47,8 @@ public class ResultWindow extends Stage {
         }
         
         if (showMark) {
-            txt.appendText("Punteggio totale: " + correctcounter + "/" + numerodomande + "\nVoto: " + correctcounter * 30.0 / numerodomande);
+            txt.appendText("Punteggio totale: " + correctcounter + "/" + Common.MAXDOMANDE
+                    + "\nVoto: " + correctcounter * 30.0 / Common.MAXDOMANDE);
         }
 
         printPane.getChildren().add(txt);

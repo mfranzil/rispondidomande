@@ -16,34 +16,53 @@ import javafx.scene.text.Text;
  * @author Matteo Franzil
  */
 public class BarraProgresso extends StackPane {
-    Text text;
-    ProgressBar bar;
+    private Text text;
+    private ProgressBar bar;
+
+    /**
+     * Wrapper per una ProgressBar con il progresso espresso in frazione stampato sopra. La ProgressBar è
+     * automaticamente inizializzata a 0.
+     */
     public BarraProgresso() {
         bar = new ProgressBar(0.0f);
-        text = new Text("1/30");
+        text = new Text("");
         text.setFont(new Font(11));
 
         getChildren().addAll(bar, text);
     }    
     
-    public void next(DomandaBox domandaBox) {
-        if (domandaBox.getDomandacorrente() < DomandaBox.numerodomande - 1) {
-            bar.setProgress(bar.getProgress() + (1.0 / DomandaBox.numerodomande));
-            domandaBox.changeQuestion(true);
-            updateText(domandaBox);
+    /**
+     *
+     * @param domandaBox
+     * @return 
+     */
+    public int next(DomandaBox domandaBox) {
+        int res = 0;
+        if (domandaBox.getDomandacorrente() < Common.MAXDOMANDE - 1) {
+            bar.setProgress(bar.getProgress() + (1.0 / Common.MAXDOMANDE));
+            res = domandaBox.changeQuestion(true);
+            updateText(domandaBox);           
         }
+        return res;
     }
     
-    public void previous(DomandaBox domandaBox) {
+    /**
+     *
+     * @param domandaBox
+     * @return
+     */
+    public int previous(DomandaBox domandaBox) {
+        int res = 0;
         if (domandaBox.getDomandacorrente() > 0) {
-            bar.setProgress(bar.getProgress() - (1.0 / DomandaBox.numerodomande));
-            domandaBox.changeQuestion(false);
+            bar.setProgress(bar.getProgress() - (1.0 / Common.MAXDOMANDE));
+            res = domandaBox.changeQuestion(false);
             updateText(domandaBox);
         }
+        return res;
     }
     
     private void updateText(DomandaBox domandaBox) {
-        text.setText((int)Math.floor(bar.getProgress()*DomandaBox.numerodomande) + "/" + DomandaBox.numerodomande);
+        text.setText((int)Math.round(bar.getProgress()*Common.MAXDOMANDE) + "/" + Common.MAXDOMANDE);
     }
     
 }
