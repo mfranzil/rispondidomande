@@ -5,17 +5,11 @@
  */
 package rispondidomande;
 
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
@@ -28,22 +22,24 @@ public class ControlPanel extends FlowPane {
 
     public ControlPanel(DomandaBox domandaBox, BarraProgresso progress) {
 
-        setPadding(new Insets(15, 15, 15, 15));
+        setPadding(new Insets(10, 10, 10, 10));
         setHgap(10);
         setVgap(10);
 
+        setPrefHeight(100);
+
         Button previous = new Button("Precedente");
         Button next = new Button("Successivo");
-        Button getResults = new Button("Ottieni risultati");
+        Button getResults = new Button("Mostra risultati");
 
-        ToggleButton marks = new ToggleButton("Mostra voti");
+        CheckBox marks = new CheckBox("Voti e risposte corrette");
         ToggleGroup send_buttons = new ToggleGroup();
-        LinkedList<ToggleButton> choice = new LinkedList<ToggleButton>(
-                Arrays.asList(new ToggleButton("A"), new ToggleButton("B"),
-                        new ToggleButton("C"), new ToggleButton("D"),
-                        new ToggleButton("E"), new ToggleButton("F")));
+        LinkedList<ToggleButton> choice = new LinkedList<>();
 
-        for (int i = 0; i < choice.size(); i++) {
+        for (int i = 0; i < Domanda.rispostemassime; i++) {
+            choice.add(new ToggleButton(RispondiDomande.intToLetter(i + 1, true)));
+        }
+        for (int i = 0; i < Domanda.rispostemassime; i++) {
             choice.get(i).setUserData(String.valueOf((char) ('A' + i)));
         }
 
@@ -67,31 +63,16 @@ public class ControlPanel extends FlowPane {
             setPreviousToggle(domandaBox, send_buttons, choice);
         });
 
-        getResults.setOnAction((ActionEvent e)
-                -> domandaBox.getResults(marks.isSelected()));
+        getResults.setOnAction((ActionEvent e) -> {
+            domandaBox.getResults(marks.isSelected());
+        });
+        
     }
 
     private void setPreviousToggle(DomandaBox domandaBox, ToggleGroup send_buttons, LinkedList<ToggleButton> choice) {
         if (send_buttons.getSelectedToggle() != null) {
             send_buttons.getSelectedToggle().setSelected(false);
         }
-        /*
-        switch (domandaBox.getPreviousAnswer()) {
-        case "A":
-        send_buttons.selectToggle(choice.get(0));
-        break;
-        case "B":
-        send_buttons.selectToggle(choice.get(1));
-        break;
-        case "C":
-        send_buttons.selectToggle(choice.get(2));
-        break;
-        case "D":
-        send_buttons.selectToggle(choice.get(3));
-        break;
-        default:
-        break;
-        }*/
     }
 
 }

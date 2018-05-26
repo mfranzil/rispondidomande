@@ -7,7 +7,6 @@ package rispondidomande;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Scanner;
@@ -36,7 +35,11 @@ public class DomandaBox extends TextArea {
 
         setWrapText(true);
         setEditable(false);
-        setWidth(500);
+        setPrefWidth(500);
+        setPrefHeight(250);
+
+        setMaxWidth(750);
+        setMaxHeight(750);
 
         Domanda.setAvailableQuestions();
 
@@ -56,21 +59,17 @@ public class DomandaBox extends TextArea {
     public void changeQuestion(boolean isNext) {
         clear();
         Domanda tmp = domande.get(isNext ? ++domandacorrente : --domandacorrente);
-        appendText(tmp.getDomanda() + "\n\na) " + tmp.getRisposta_a()
-                + "\nb) " + tmp.getRisposta_b()
-                + "\nc) " + tmp.getRisposta_c());
-        try {
-            if (!tmp.getRisposta_d().equals("") || tmp.getRisposta_d() == null) {
-                appendText("\nd) " + tmp.getRisposta_d());
+        appendText(tmp.getDomanda() + "\n");
+
+        for (int i = 1; i <= Domanda.rispostemassime; i++) {
+            try {
+                String risposta = tmp.getRisposte().get(i - 1);
+                if (!risposta.equals("")) {
+                    appendText("\n" + RispondiDomande.intToLetter(i, false) + ") " + risposta);
+                }
+            } catch (NullPointerException e) {
+                System.err.println("Missing response in this question");
             }
-            if (!tmp.getRisposta_e().equals("") || tmp.getRisposta_e() == null) {
-                appendText("\ne) " + tmp.getRisposta_e());
-            }
-            if (!tmp.getRisposta_f().equals("") || tmp.getRisposta_f() == null) {
-                appendText("\nf) " + tmp.getRisposta_f());
-            }
-        } catch (NullPointerException e) {
-            System.out.println("Missing response in this question");
         }
 
         try {
@@ -83,10 +82,12 @@ public class DomandaBox extends TextArea {
                 appendText(new String(scanner.nextLine().getBytes(), "utf-8") + "\n");
             }
         } catch (UnsupportedEncodingException ex) {
+            System.err.println("Encoding error!");
             Logger.getLogger(DomandaBox.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex) {
-            System.out.println("File has no correlated attachment");
+            System.err.println("File has no correlated attachment");
         }
+        
         // Posiziono la TextArea in alto
         positionCaret(0);
     }
@@ -99,39 +100,14 @@ public class DomandaBox extends TextArea {
             System.out.println("User answer:" + user_answer);
         } catch (NullPointerException e) {
             user_answer = null;
-            System.out.println("No user response found");
+            System.err.println("No user response found");
         }
         current.setRispostadata(user_answer);
     }
 
     public void getResults(boolean showMark) {
-        Stage printWindow = new Stage();
-        StackPane printPane = new StackPane();
-        Scene printScene = new Scene(printPane, 300, 300);
-        TextArea txt = new TextArea();
-        txt.setWrapText(true);
-
-        int i = 0, correctcounter = 0;
-        for (Domanda a : domande) {
-            if (a.checkCorrect()) {
-                correctcounter++;
-            }
-            txt.appendText("Domanda " + (i + 1) + "/" + numerodomande + " (ID " + a.getId() + "): " + a.getDomanda() + "\n"
-                    + "Risposta data: " + (a.getRispostadata() == null ? "Nessuna" : a.getRispostadata()) + "\n");
-            if (showMark) {
-                txt.appendText("Risposta corretta: " + a.getRispostacorretta());
-            }
-            txt.appendText("\n\n");
-            i++;
-        }
-        if (showMark) {
-            txt.appendText("\n\nPunteggio totale: " + correctcounter + "/" + numerodomande + "\nVoto: " + correctcounter * 30.0 / numerodomande);
-        }
-
-        printPane.getChildren().add(txt);
-        printWindow.setScene(printScene);
-        printWindow.setTitle("Dati:");
-        printWindow.show();
+        ResultWindow results = new ResultWindow(domande, showMark);
+        results.show();
     }
 
     public String getPreviousAnswer() {

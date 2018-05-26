@@ -30,13 +30,12 @@ public class RispondiDomande extends Application {
         root.setPadding(new Insets(10, 10, 10, 10));
         root.getChildren().addAll(buttons, domandaBox);
 
-        Scene scene = new Scene(root, domandaBox.getWidth(), 300);
+        Scene scene = new Scene(root, domandaBox.getPrefWidth(), domandaBox.getPrefHeight() + buttons.getPrefHeight());
 
         primaryStage.setTitle("RispondiDomande");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
 
     /**
      * @param args the command line arguments
@@ -44,5 +43,33 @@ public class RispondiDomande extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    public static String intToLetter(int input, boolean uppercase) {
+        String res;
+        switch (input) {
+            case 1:
+                res = "a";
+                break;
+            case 2:
+                res = "b";
+                break;
+            case 3:
+                res = "c";
+                break;
+            case 4:
+                res = "d";
+                break;
+            case 5:
+                res = "e";
+                break;
+            case 6:
+                res = "f";
+                break;
+            default:
+                res = String.valueOf(input);
+                break;
+        }
+        return uppercase ? res.toUpperCase() : res;
+    }    
 
 }
