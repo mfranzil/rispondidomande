@@ -8,8 +8,11 @@ package rispondidomande;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -31,6 +34,15 @@ public class RispondiDomande extends Application {
         root.getChildren().addAll(buttons, domandaBox);
 
         Scene scene = new Scene(root, domandaBox.getPrefWidth(), domandaBox.getPrefHeight() + buttons.getPrefHeight());
+        
+        primaryStage.setOnCloseRequest((WindowEvent e) -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro di voler uscire?");
+            alert.showAndWait()
+                    .filter(response -> response == ButtonType.CANCEL)
+                    .ifPresent(response -> e.consume());
+        });
+        
+        
 
         primaryStage.setTitle("RispondiDomande");
         primaryStage.setScene(scene);

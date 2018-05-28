@@ -23,6 +23,8 @@ public class DomandaBox extends TextArea {
 
     private int domandacorrente;
     private LinkedList<Domanda> domande;
+    
+    private ResultWindow results;
 
     /**
      * Costruttore standard. Ritorna una TextArea dove verranno scritte le
@@ -48,7 +50,7 @@ public class DomandaBox extends TextArea {
                 Logger.getLogger(DomandaBox.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+               
         appendText("Ciao! Per iniziare, premi il pulsante Successivo. Il test è composto da " + Common.MAXDOMANDE + " domande.\n\n"
                 + "Il bottone Mostra risultati mostrerà soltanto la lista di domande e risposte date.\n\n"
                 + "Quando l'opzione Voti e risposte corrette, verranno mostrate le risposte corrette e il voto totale.");
@@ -126,7 +128,12 @@ public class DomandaBox extends TextArea {
      * @param showMark Mostra anche il voto totale e le risposte giuste?
      */
     public void getResults(boolean showMark) {
-        ResultWindow results = new ResultWindow(domande, showMark);
+        try {
+            results.close();
+        } catch (NullPointerException e) {
+            System.out.println("No window present.");
+        }
+        results = new ResultWindow(domande, showMark);
         results.show();
     }
 

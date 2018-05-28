@@ -28,7 +28,7 @@ public class ControlPanel extends FlowPane {
      * @param progress
      */
     public ControlPanel(DomandaBox domandaBox, BarraProgresso progress) {
-
+        
         setPadding(new Insets(10, 10, 10, 10));
         setHgap(10);
         setVgap(10);
@@ -43,7 +43,7 @@ public class ControlPanel extends FlowPane {
         ToggleGroup send_buttons = new ToggleGroup();
         buttons = new LinkedList<>();
 
-        for (int i = 0; i < Common.MAXRISPOSTE; i++) {
+        for (int i = 0; i < Domanda.getMaxopzioni(); i++) {
             ToggleButton button = new ToggleButton(Common.intToLetter(i + 1, true));
             buttons.add(button);
             button.setUserData(Common.intToLetter(i + 1, true));
@@ -109,7 +109,7 @@ public class ControlPanel extends FlowPane {
             buttons.get(i).setDisable(false);
         }
 
-        for (int i = buttonNumber; i < Common.MAXRISPOSTE; i++) {
+        for (int i = buttonNumber; i < Domanda.getMaxopzioni(); i++) {
             buttons.get(i).setDisable(true);
         }
     }

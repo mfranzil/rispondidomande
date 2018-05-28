@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
@@ -23,8 +24,9 @@ public class Domanda {
     private ArrayList<String> risposte;
     private int id, numerorisposte;
     
-    private static int indice_domande;
-    private static final ArrayList<Integer> domandedisponibili = new ArrayList<>();
+    private static final LinkedList<Integer> domandedisponibili = new LinkedList<>();
+    private static int maxopzioni = 0;
+
 
     /**
      * Costruttore standard per una Domanda. All'inizio, un ArrayList viene popolato con gli id possibili delle domande. Ogni volta che 
@@ -32,13 +34,11 @@ public class Domanda {
      * @throws UnsupportedEncodingException
      */
     public Domanda() throws UnsupportedEncodingException {
-        System.out.println(domandedisponibili.isEmpty());
-        System.out.println(indice_domande);
         if (domandedisponibili.isEmpty()) {
             setAvailableQuestions();
         }        
         
-        int id_temp = domandedisponibili.get(--indice_domande);
+        int id_temp = domandedisponibili.pollLast();
 
         // Inizializzo lo scanner per evitare errori di codifica errata
         InputStream in = getClass().getResourceAsStream(Common.PATH + String.valueOf(id_temp) + ".txt");
@@ -56,7 +56,7 @@ public class Domanda {
         domanda = new String(scanner.nextLine().getBytes(), "utf-8");
         
         risposte = new ArrayList<>();
-        for (int i = 0; i < Common.MAXRISPOSTE; i++) {
+        for (int i = 0; i < numerorisposte; i++) {
             try {
                 risposte.add(new String(scanner.nextLine().getBytes(), "utf-8"));
             } catch (NullPointerException e) {
@@ -66,10 +66,13 @@ public class Domanda {
             }
         }
         rispostadata = null;
+        
+        if (numerorisposte > maxopzioni) {
+            maxopzioni = numerorisposte;
+        }
     }
 
      private void setAvailableQuestions() {
-        indice_domande = Common.DOMANDETOTALI;
         for (int i = 0; i < Common.DOMANDETOTALI; i++) {
             domandedisponibili.add(i);
         }
@@ -131,7 +134,11 @@ public class Domanda {
     public int getNumerorisposte() {
         return numerorisposte;
     }
-    
+
+    public static int getMaxopzioni() {
+        return maxopzioni;
+    }    
+      
      /**
      *
      * @param rispostadata

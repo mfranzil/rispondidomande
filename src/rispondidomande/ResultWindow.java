@@ -50,7 +50,7 @@ public class ResultWindow extends Stage {
             txt.appendText("Punteggio totale: " + correctcounter + "/" + Common.MAXDOMANDE
                     + "\nVoto: " + correctcounter * 30.0 / Common.MAXDOMANDE);
         }
-
+        
         printPane.getChildren().add(txt);
         setScene(printScene);
         setTitle("Dati:");
