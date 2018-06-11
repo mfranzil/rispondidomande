@@ -28,7 +28,7 @@ public class ControlPanel extends FlowPane {
      * @param progress
      */
     public ControlPanel(DomandaBox domandaBox, BarraProgresso progress) {
-        
+
         setPadding(new Insets(10, 10, 10, 10));
         setHgap(10);
         setVgap(10);
@@ -39,7 +39,7 @@ public class ControlPanel extends FlowPane {
         Button next = new Button("Successivo");
         Button getResults = new Button("Mostra risultati");
         CheckBox marks = new CheckBox("Voti e risposte corrette");
-        
+
         ToggleGroup send_buttons = new ToggleGroup();
         buttons = new LinkedList<>();
 
@@ -48,9 +48,12 @@ public class ControlPanel extends FlowPane {
             buttons.add(button);
             button.setUserData(Common.intToLetter(i + 1, true));
             button.setToggleGroup(send_buttons);
+
+            button.setOnAction(e -> domandaBox.processQuestion(send_buttons));
+
             getChildren().add(button);
         }
-        
+
         // All'inizio tutti i bottoni sono disabilitati
         activeButtonSwitcher(0);
         previous.setDisable(true);
@@ -61,12 +64,11 @@ public class ControlPanel extends FlowPane {
         // alle domande totali. Entrambi i metodi processano la domanda corrente, aggiornano la Progress
         // Bar alla domanda successiva (ricevendo un intero che rappresenta il numero di bottoni da attivare)
         // e infine disabilitano tutti i bottoni di scelta.
-        previous.setOnAction((ActionEvent e) -> {          
-            domandaBox.processQuestion(send_buttons);
+        previous.setOnAction((ActionEvent e) -> {
             int bottoniattivi = progress.previous(domandaBox);
             setPreviousToggle(send_buttons);
             activeButtonSwitcher(bottoniattivi);
-            
+
             next.setDisable(false);
 
             if (domandaBox.getDomandacorrente() <= 0) {
@@ -77,7 +79,6 @@ public class ControlPanel extends FlowPane {
         });
 
         next.setOnAction((ActionEvent e) -> {
-            domandaBox.processQuestion(send_buttons);
             int bottoniattivi = progress.next(domandaBox);
             setPreviousToggle(send_buttons);
             activeButtonSwitcher(bottoniattivi);
@@ -85,7 +86,7 @@ public class ControlPanel extends FlowPane {
             if (domandaBox.getDomandacorrente() > 0) {
                 previous.setDisable(false);
             }
-            
+
             if (domandaBox.getDomandacorrente() + 1 >= Common.MAXDOMANDE) {
                 progress.next(domandaBox);
                 next.setDisable(true);

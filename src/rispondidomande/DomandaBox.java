@@ -39,9 +39,9 @@ public class DomandaBox extends TextArea {
         setPrefWidth(500);
         setPrefHeight(250);
 
-        setMaxWidth(750);
-        setMaxHeight(750);
-
+        setMaxWidth(1500);
+        setMaxHeight(1500);
+        
         for (int i = 0; i < Common.MAXDOMANDE; i++) {
             try {
                 Domanda tmp = new Domanda();
@@ -55,17 +55,11 @@ public class DomandaBox extends TextArea {
                 + "Il bottone Mostra risultati mostrerà soltanto la lista di domande e risposte date.\n\n"
                 + "Quando l'opzione Voti e risposte corrette, verranno mostrate le risposte corrette e il voto totale.");
     }
+    
+    public int changeQuestion(int number) {
+         clear();
 
-    /**
-     *
-     * @param isNext Cambio alla domanda successiva o meno
-     * @return Il numero di bottoni che si rendono necessari per la domanda in
-     * questione.
-     */
-    public int changeQuestion(boolean isNext) {
-        clear();
-
-        Domanda tmp = domande.get(isNext ? ++domandacorrente : --domandacorrente);
+        Domanda tmp = domande.get(number);
         appendText(tmp.getDomanda() + "\n");
 
         for (int i = 1; i <= tmp.getNumerorisposte(); i++) {
@@ -99,6 +93,16 @@ public class DomandaBox extends TextArea {
         positionCaret(0);
 
         return tmp.getNumerorisposte();
+    }
+
+    /**
+     *
+     * @param isNext Cambio alla domanda successiva o meno
+     * @return Il numero di bottoni che si rendono necessari per la domanda in
+     * questione.
+     */
+    public int changeQuestion(boolean isNext) {
+       return changeQuestion(isNext ? ++domandacorrente : --domandacorrente);
     }
 
     /**

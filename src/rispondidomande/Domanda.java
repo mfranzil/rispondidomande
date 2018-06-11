@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.NoSuchElementException;
@@ -23,21 +24,23 @@ public class Domanda {
     private String domanda, rispostadata, rispostacorretta;
     private ArrayList<String> risposte;
     private int id, numerorisposte;
-    
+
     private static final LinkedList<Integer> domandedisponibili = new LinkedList<>();
     private static int maxopzioni = 0;
 
-
     /**
-     * Costruttore standard per una Domanda. All'inizio, un ArrayList viene popolato con gli id possibili delle domande. Ogni volta che 
-     * viene invocato il costruttore, viene pescato e rimosso un ID random dall'ArrayList, e una nuova Domanda con quell'id viene generata.
+     * Costruttore standard per una Domanda. All'inizio, un ArrayList viene
+     * popolato con gli id possibili delle domande. Ogni volta che viene
+     * invocato il costruttore, viene pescato e rimosso un ID random
+     * dall'ArrayList, e una nuova Domanda con quell'id viene generata.
+     *
      * @throws UnsupportedEncodingException
      */
     public Domanda() throws UnsupportedEncodingException {
         if (domandedisponibili.isEmpty()) {
             setAvailableQuestions();
-        }        
-        
+        }
+
         int id_temp = domandedisponibili.pollLast();
 
         // Inizializzo lo scanner per evitare errori di codifica errata
@@ -45,16 +48,20 @@ public class Domanda {
         Locale loc = new Locale("it", "IT");
         Scanner scanner = new Scanner(in);
         scanner.useLocale(loc);
-        
+
         // Vedi README.md per informazioni sulla sintassi dei file scansionati
-        id = scanner.nextInt();
-        numerorisposte = scanner.nextInt();
-        rispostacorretta = Common.intToLetter(scanner.nextInt(), true);
+        try {
+            id = scanner.nextInt();
+            numerorisposte = scanner.nextInt();
+            rispostacorretta = Common.intToLetter(scanner.nextInt(), true);
+        } catch (InputMismatchException e) {
+            System.err.println("InputMismatchException caused by " + Common.PATH + String.valueOf(id_temp) + ".txt");
+        }
 
         // Salto una riga per passare alla lettura della domanda
         scanner.nextLine();
         domanda = new String(scanner.nextLine().getBytes(), "utf-8");
-        
+
         risposte = new ArrayList<>();
         for (int i = 0; i < numerorisposte; i++) {
             try {
@@ -66,13 +73,13 @@ public class Domanda {
             }
         }
         rispostadata = null;
-        
+
         if (numerorisposte > maxopzioni) {
             maxopzioni = numerorisposte;
         }
     }
 
-     private void setAvailableQuestions() {
+    private void setAvailableQuestions() {
         for (int i = 0; i < Common.DOMANDETOTALI; i++) {
             domandedisponibili.add(i);
         }
@@ -80,7 +87,9 @@ public class Domanda {
     }
 
     /**
-     * Metodo per controllare la correttezza di una risposta data dall'utente alla domanda.
+     * Metodo per controllare la correttezza di una risposta data dall'utente
+     * alla domanda.
+     *
      * @return Un boolean che rappresenta la correttezza o meno della risposta.
      */
     public boolean checkCorrect() {
@@ -137,9 +146,9 @@ public class Domanda {
 
     public static int getMaxopzioni() {
         return maxopzioni;
-    }    
-      
-     /**
+    }
+
+    /**
      *
      * @param rispostadata
      */

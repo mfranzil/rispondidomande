@@ -14,7 +14,7 @@ public class Common {
     /**
      * Le domande totali disponibili su disco su /src/domande.
      */
-    public static final int DOMANDETOTALI = 72;
+    public static final int DOMANDETOTALI = 102;
 
     /**
      * Le domande da fare a ogni istanza del programma.
