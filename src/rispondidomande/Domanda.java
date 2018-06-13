@@ -7,13 +7,7 @@ package rispondidomande;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.InputMismatchException;
-import java.util.LinkedList;
-import java.util.Locale;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  *
@@ -93,11 +87,7 @@ public class Domanda {
      * @return Un boolean che rappresenta la correttezza o meno della risposta.
      */
     public boolean checkCorrect() {
-        if (rispostacorretta.equals(rispostadata)) {
-            return true;
-        } else {
-            return false;
-        }
+        return rispostacorretta.equals(rispostadata);
     }
 
     /**

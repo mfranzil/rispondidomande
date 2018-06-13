@@ -6,6 +6,7 @@
 package rispondidomande;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -60,6 +61,7 @@ public class Main extends Application {
             alert.showAndWait()
                     .filter(response -> response == ButtonType.CANCEL)
                     .ifPresent(response -> e.consume());
+            Platform.exit();
         });
 
         primaryStage.setTitle("RispondiDomande");
