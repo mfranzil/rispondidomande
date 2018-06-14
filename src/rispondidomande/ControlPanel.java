@@ -5,7 +5,6 @@
  */
 package rispondidomande;
 
-import java.util.LinkedList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -13,6 +12,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
+
+import java.util.LinkedList;
 
 /**
  *
@@ -23,9 +24,9 @@ public class ControlPanel extends FlowPane {
     private LinkedList<ToggleButton> buttons;
 
     /**
-     *
-     * @param domandaBox
-     * @param progress
+     * Costruttore standard.
+     * @param domandaBox Una domandaBox su cui disegnare le domande.
+     * @param progress Una BarraProgresso per tracciare il numero di domande.
      */
     public ControlPanel(DomandaBox domandaBox, BarraProgresso progress) {
 
@@ -35,8 +36,8 @@ public class ControlPanel extends FlowPane {
 
         setPrefHeight(100);
 
-        Button previous = new Button("Precedente");
-        Button next = new Button("Successivo");
+        Button previous = new Button("⬅");
+        Button next = new Button("➡ Inizia");
         Button getResults = new Button("Mostra risultati");
         CheckBox marks = new CheckBox("Voti e risposte corrette");
 
@@ -68,6 +69,9 @@ public class ControlPanel extends FlowPane {
             int bottoniattivi = progress.previous(domandaBox);
             setPreviousToggle(send_buttons);
             activeButtonSwitcher(bottoniattivi);
+            previous.setText("⬅ " + (domandaBox.getDomandacorrente()));
+            next.setText("➡ " + (domandaBox.getDomandacorrente() + 2));
+
 
             next.setDisable(false);
 
@@ -82,6 +86,8 @@ public class ControlPanel extends FlowPane {
             int bottoniattivi = progress.next(domandaBox);
             setPreviousToggle(send_buttons);
             activeButtonSwitcher(bottoniattivi);
+            previous.setText("⬅ " + (domandaBox.getDomandacorrente()));
+            next.setText("➡ " + (domandaBox.getDomandacorrente() + 2));
 
             if (domandaBox.getDomandacorrente() > 0) {
                 previous.setDisable(false);

@@ -92,7 +92,7 @@ public class Domanda {
 
     /**
      *
-     * @return
+     * @return Una String contenente la domanda.
      */
     public String getDomanda() {
         return domanda;
@@ -100,7 +100,7 @@ public class Domanda {
 
     /**
      *
-     * @return
+     * @return L'elenco di risposte ammesse alla domanda.
      */
     public ArrayList<String> getRisposte() {
         return risposte;
@@ -108,7 +108,7 @@ public class Domanda {
 
     /**
      *
-     * @return
+     * @return L'ID univoco della domanda.
      */
     public int getId() {
         return id;
@@ -116,7 +116,7 @@ public class Domanda {
 
     /**
      *
-     * @return
+     * @return Una String contenente la risposta corretta alla domanda.
      */
     public String getRispostacorretta() {
         return rispostacorretta;
@@ -124,7 +124,7 @@ public class Domanda {
 
     /**
      *
-     * @return
+     * @return Una String contenente la risposta data alla domanda.
      */
     public String getRispostadata() {
         return rispostadata;
@@ -139,8 +139,8 @@ public class Domanda {
     }
 
     /**
-     *
-     * @param rispostadata
+     * Metodo per impostare la risposta data.
+     * @param rispostadata La risposta fornita dall'utente.
      */
     public void setRispostadata(String rispostadata) {
         this.rispostadata = rispostadata;

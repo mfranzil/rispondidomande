@@ -49,8 +49,8 @@ public class Main extends Application {
 
         GridPane.setConstraints(domandaBox, 0, 0);
         GridPane.setConstraints(buttons, 0, 1);
-        
-        
+
+
         root.setPadding(new Insets(10, 10, 10, 10));
         root.getChildren().addAll(buttons, domandaBox);
 

@@ -5,6 +5,9 @@
  */
 package rispondidomande;
 
+import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleGroup;
+
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
@@ -12,8 +15,6 @@ import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
 
 /**
  *
@@ -23,7 +24,7 @@ public class DomandaBox extends TextArea {
 
     private int domandacorrente;
     private LinkedList<Domanda> domande;
-    
+
     private ResultWindow results;
 
     /**
@@ -41,7 +42,7 @@ public class DomandaBox extends TextArea {
 
         setMaxWidth(1500);
         setMaxHeight(1500);
-        
+
         for (int i = 0; i < Common.MAXDOMANDE; i++) {
             try {
                 Domanda tmp = new Domanda();
@@ -50,12 +51,24 @@ public class DomandaBox extends TextArea {
                 Logger.getLogger(DomandaBox.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-               
+
         appendText("Ciao! Per iniziare, premi il pulsante Successivo. Il test è composto da " + Common.MAXDOMANDE + " domande.\n\n"
                 + "Il bottone Mostra risultati mostrerà soltanto la lista di domande e risposte date.\n\n"
                 + "Quando l'opzione Voti e risposte corrette, verranno mostrate le risposte corrette e il voto totale.");
+
+        /*
+         for(int i = 0; i < Common.MAXDOMANDE; i++) {
+            Button button = new Button(""+(1+i));
+            getChildren().add(button);
+
+            int finalI = i;
+            button.setOnAction(e -> {
+                domandaBox.changeQuestion(finalI);
+            });
+        }
+         */
     }
-    
+
     public int changeQuestion(int number) {
          clear();
 
@@ -147,6 +160,10 @@ public class DomandaBox extends TextArea {
      */
     public int getDomandacorrente() {
         return domandacorrente;
+    }
+
+    public String getRispostacorrente() {
+        return domande.get(domandacorrente).getRispostadata();
     }
 
 }

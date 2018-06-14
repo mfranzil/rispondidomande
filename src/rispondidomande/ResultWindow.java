@@ -5,11 +5,12 @@
  */
 package rispondidomande;
 
-import java.util.LinkedList;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.util.LinkedList;
 
 /**
  *
@@ -18,9 +19,9 @@ import javafx.stage.Stage;
 public class ResultWindow extends Stage {
 
     /**
-     *
-     * @param domande
-     * @param showMark
+     * Costruisce una finestra contenente i risultati.
+     * @param domande Una lista di Domande dalla quale verranno prelevati i risultati.
+     * @param showMark Mostrare o meno le risposte giuste?
      */
     public ResultWindow(LinkedList<Domanda> domande, boolean showMark) {
         StackPane printPane = new StackPane();
