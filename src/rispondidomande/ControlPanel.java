@@ -16,7 +16,6 @@ import javafx.scene.layout.FlowPane;
 import java.util.LinkedList;
 
 /**
- *
  * @author Matteo Franzil
  */
 public class ControlPanel extends FlowPane {
@@ -25,8 +24,9 @@ public class ControlPanel extends FlowPane {
 
     /**
      * Costruttore standard.
+     *
      * @param domandaBox Una domandaBox su cui disegnare le domande.
-     * @param progress Una BarraProgresso per tracciare il numero di domande.
+     * @param progress   Una BarraProgresso per tracciare il numero di domande.
      */
     public ControlPanel(DomandaBox domandaBox, BarraProgresso progress) {
 
@@ -99,10 +99,7 @@ public class ControlPanel extends FlowPane {
             }
         });
 
-        getResults.setOnAction((ActionEvent e) -> {
-            domandaBox.getResults(marks.isSelected());
-        });
-
+        getResults.setOnAction(e -> domandaBox.getResults(marks.isSelected()));
     }
 
     private void setPreviousToggle(ToggleGroup send_buttons) {

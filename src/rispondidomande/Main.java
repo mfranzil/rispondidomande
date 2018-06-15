@@ -57,11 +57,11 @@ public class Main extends Application {
         Scene scene = new Scene(root, domandaBox.getPrefWidth(), domandaBox.getPrefHeight() + buttons.getPrefHeight());
 
         primaryStage.setOnCloseRequest((WindowEvent e) -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro di voler uscire?");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Sei sicuro di voler uscire?", ButtonType.OK, ButtonType.CANCEL);
             alert.showAndWait()
-                    .filter(response -> response == ButtonType.CANCEL)
-                    .ifPresent(response -> e.consume());
-            Platform.exit();
+                    .filter(response -> response == ButtonType.OK)
+                    .ifPresent(response -> Platform.exit());
+            e.consume();
         });
 
         primaryStage.setTitle("RispondiDomande");

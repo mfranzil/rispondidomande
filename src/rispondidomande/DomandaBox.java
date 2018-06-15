@@ -55,18 +55,6 @@ public class DomandaBox extends TextArea {
         appendText("Ciao! Per iniziare, premi il pulsante Successivo. Il test è composto da " + Common.MAXDOMANDE + " domande.\n\n"
                 + "Il bottone Mostra risultati mostrerà soltanto la lista di domande e risposte date.\n\n"
                 + "Quando l'opzione Voti e risposte corrette, verranno mostrate le risposte corrette e il voto totale.");
-
-        /*
-         for(int i = 0; i < Common.MAXDOMANDE; i++) {
-            Button button = new Button(""+(1+i));
-            getChildren().add(button);
-
-            int finalI = i;
-            button.setOnAction(e -> {
-                domandaBox.changeQuestion(finalI);
-            });
-        }
-         */
     }
 
     public int changeQuestion(int number) {
