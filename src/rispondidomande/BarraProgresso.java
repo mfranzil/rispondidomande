@@ -39,7 +39,7 @@ public class BarraProgresso extends StackPane {
         if (domandaBox.getDomandacorrente() < Common.MAXDOMANDE - 1) {
             bar.setProgress(bar.getProgress() + (1.0 / Common.MAXDOMANDE));
             res = domandaBox.changeQuestion(true);
-            updateText(domandaBox);
+            updateText();
         }
         return res;
     }
@@ -53,12 +53,12 @@ public class BarraProgresso extends StackPane {
         if (domandaBox.getDomandacorrente() > 0) {
             bar.setProgress(bar.getProgress() - (1.0 / Common.MAXDOMANDE));
             res = domandaBox.changeQuestion(false);
-            updateText(domandaBox);
+            updateText();
         }
         return res;
     }
 
-    private void updateText(DomandaBox domandaBox) {
+    private void updateText() {
         text.setText((int) Math.round(bar.getProgress() * Common.MAXDOMANDE) + "/" + Common.MAXDOMANDE);
     }
 

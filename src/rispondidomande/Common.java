@@ -18,7 +18,7 @@ public class Common {
     /**
      * Le domande da fare a ogni istanza del programma.
      */
-    public static final int MAXDOMANDE = 12;
+    public static int MAXDOMANDE = 12;
 
     /**
      * La PATH su disco per trovare le domande.

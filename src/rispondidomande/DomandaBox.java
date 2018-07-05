@@ -24,7 +24,7 @@ public class DomandaBox extends TextArea {
     private int domandacorrente;
     private LinkedList<Domanda> domande;
 
-    private ResultWindow results;
+    private ResultView results;
 
     /**
      * Costruttore standard. Ritorna una TextArea dove verranno scritte le
@@ -42,6 +42,7 @@ public class DomandaBox extends TextArea {
         setMaxWidth(1500);
         setMaxHeight(1500);
 
+        System.out.println(Common.MAXDOMANDE);
         for (int i = 0; i < Common.MAXDOMANDE; i++) {
             try {
                 Domanda tmp = new Domanda();
@@ -136,7 +137,7 @@ public class DomandaBox extends TextArea {
         } catch (NullPointerException e) {
             System.out.println("No window present.");
         }
-        results = new ResultWindow(domande, showMark);
+        results = new ResultView(domande, showMark);
         results.show();
     }
 

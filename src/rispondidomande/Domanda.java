@@ -14,6 +14,8 @@ import java.util.*;
  */
 public class Domanda {
 
+    public static boolean startup = true;
+
     private static final LinkedList<Integer> domandedisponibili = new LinkedList<>();
     private static int maxopzioni = 0;
     private String domanda, rispostadata, rispostacorretta;
@@ -31,6 +33,7 @@ public class Domanda {
     public Domanda() throws UnsupportedEncodingException {
         if (domandedisponibili.isEmpty()) {
             setAvailableQuestions();
+            startup = false;
         }
 
         int id_temp = domandedisponibili.pollLast();
@@ -73,6 +76,10 @@ public class Domanda {
 
     public static int getMaxopzioni() {
         return maxopzioni;
+    }
+
+    public static int getDomandeRimaste() {
+        return domandedisponibili.size();
     }
 
     private void setAvailableQuestions() {
