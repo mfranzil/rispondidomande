@@ -13,14 +13,14 @@ import javafx.stage.Stage;
 import java.util.LinkedList;
 
 /**
- *
  * @author Matteo Franzil
  */
 public class ResultWindow extends Stage {
 
     /**
      * Costruisce una finestra contenente i risultati.
-     * @param domande Una lista di Domande dalla quale verranno prelevati i risultati.
+     *
+     * @param domande  Una lista di Domande dalla quale verranno prelevati i risultati.
      * @param showMark Mostrare o meno le risposte giuste?
      */
     public ResultWindow(LinkedList<Domanda> domande, boolean showMark) {
@@ -34,29 +34,28 @@ public class ResultWindow extends Stage {
             if (a.checkCorrect()) {
                 correctcounter++;
             }
-            
-            txt.appendText("Domanda " + (i + 1) + "/" + Common.MAXDOMANDE + " (ID " + a.getId() + "): " 
+
+            txt.appendText("Domanda " + (i + 1) + "/" + Common.MAXDOMANDE + " (ID " + a.getId() + "): "
                     + a.getDomanda() + "\n" + "Risposta data: " +
                     (a.getRispostadata() == null ? "Nessuna" : a.getRispostadata()) + "\n");
-            
+
             if (showMark) {
                 txt.appendText("Risposta corretta: " + a.getRispostacorretta());
             }
-            
+
             txt.appendText("\n\n");
             i++;
         }
-        
+
         if (showMark) {
             txt.appendText("Punteggio totale: " + correctcounter + "/" + Common.MAXDOMANDE
                     + "\nVoto: " + correctcounter * 30.0 / Common.MAXDOMANDE);
         }
-        
+
         printPane.getChildren().add(txt);
         setScene(printScene);
         setTitle("Dati:");
     }
-    
-    
-    
+
+
 }

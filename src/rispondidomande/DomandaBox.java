@@ -17,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Matteo Franzil
  */
 public class DomandaBox extends TextArea {
@@ -58,7 +57,7 @@ public class DomandaBox extends TextArea {
     }
 
     public int changeQuestion(int number) {
-         clear();
+        clear();
 
         Domanda tmp = domande.get(number);
         appendText(tmp.getDomanda() + "\n");
@@ -97,20 +96,19 @@ public class DomandaBox extends TextArea {
     }
 
     /**
-     *
      * @param isNext Cambio alla domanda successiva o meno
      * @return Il numero di bottoni che si rendono necessari per la domanda in
      * questione.
      */
     public int changeQuestion(boolean isNext) {
-       return changeQuestion(isNext ? ++domandacorrente : --domandacorrente);
+        return changeQuestion(isNext ? ++domandacorrente : --domandacorrente);
     }
 
     /**
      * Metodo che memorizza nella Domanda corrente la risposta data dall'utente
      *
      * @param send_buttons Il ToggleGroup da cui prendere il bottone
-     * selezionato.
+     *                     selezionato.
      */
     public void processQuestion(ToggleGroup send_buttons) {
         if (domandacorrente > -1 && domandacorrente < Common.MAXDOMANDE) {
@@ -143,7 +141,6 @@ public class DomandaBox extends TextArea {
     }
 
     /**
-     *
      * @return
      */
     public int getDomandacorrente() {

@@ -12,7 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
- *
  * @author Matteo Franzil
  */
 public class BarraProgresso extends StackPane {
@@ -29,25 +28,23 @@ public class BarraProgresso extends StackPane {
         text.setFont(new Font(11));
 
         getChildren().addAll(bar, text);
-    }    
-    
+    }
+
     /**
-     *
      * @param domandaBox
-     * @return 
+     * @return
      */
     public int next(DomandaBox domandaBox) {
         int res = 0;
         if (domandaBox.getDomandacorrente() < Common.MAXDOMANDE - 1) {
             bar.setProgress(bar.getProgress() + (1.0 / Common.MAXDOMANDE));
             res = domandaBox.changeQuestion(true);
-            updateText(domandaBox);           
+            updateText(domandaBox);
         }
         return res;
     }
-    
+
     /**
-     *
      * @param domandaBox
      * @return
      */
@@ -60,9 +57,9 @@ public class BarraProgresso extends StackPane {
         }
         return res;
     }
-    
+
     private void updateText(DomandaBox domandaBox) {
-        text.setText((int)Math.round(bar.getProgress()*Common.MAXDOMANDE) + "/" + Common.MAXDOMANDE);
+        text.setText((int) Math.round(bar.getProgress() * Common.MAXDOMANDE) + "/" + Common.MAXDOMANDE);
     }
-    
+
 }

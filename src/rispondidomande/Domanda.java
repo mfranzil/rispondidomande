@@ -10,17 +10,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
- *
  * @author Matteo Franzil
  */
 public class Domanda {
 
+    private static final LinkedList<Integer> domandedisponibili = new LinkedList<>();
+    private static int maxopzioni = 0;
     private String domanda, rispostadata, rispostacorretta;
     private ArrayList<String> risposte;
     private int id, numerorisposte;
-
-    private static final LinkedList<Integer> domandedisponibili = new LinkedList<>();
-    private static int maxopzioni = 0;
 
     /**
      * Costruttore standard per una Domanda. All'inizio, un ArrayList viene
@@ -73,6 +71,10 @@ public class Domanda {
         }
     }
 
+    public static int getMaxopzioni() {
+        return maxopzioni;
+    }
+
     private void setAvailableQuestions() {
         for (int i = 0; i < Common.DOMANDETOTALI; i++) {
             domandedisponibili.add(i);
@@ -91,7 +93,6 @@ public class Domanda {
     }
 
     /**
-     *
      * @return Una String contenente la domanda.
      */
     public String getDomanda() {
@@ -99,7 +100,6 @@ public class Domanda {
     }
 
     /**
-     *
      * @return L'elenco di risposte ammesse alla domanda.
      */
     public ArrayList<String> getRisposte() {
@@ -107,7 +107,6 @@ public class Domanda {
     }
 
     /**
-     *
      * @return L'ID univoco della domanda.
      */
     public int getId() {
@@ -115,7 +114,6 @@ public class Domanda {
     }
 
     /**
-     *
      * @return Una String contenente la risposta corretta alla domanda.
      */
     public String getRispostacorretta() {
@@ -123,26 +121,22 @@ public class Domanda {
     }
 
     /**
-     *
      * @return Una String contenente la risposta data alla domanda.
      */
     public String getRispostadata() {
         return rispostadata;
     }
 
-    public int getNumerorisposte() {
-        return numerorisposte;
-    }
-
-    public static int getMaxopzioni() {
-        return maxopzioni;
-    }
-
     /**
      * Metodo per impostare la risposta data.
+     *
      * @param rispostadata La risposta fornita dall'utente.
      */
     public void setRispostadata(String rispostadata) {
         this.rispostadata = rispostadata;
+    }
+
+    public int getNumerorisposte() {
+        return numerorisposte;
     }
 }
