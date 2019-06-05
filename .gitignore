@@ -1,3 +1,13 @@
+nbproject/
+.idea/
+dist/
+etc/
+out/
+build/
+
+
+*.iml
+
 # Compiled class file
 *.class
 

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="RispondiDomande:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/RispondiDomande_jar</output-path>
+    <root id="archive" name="RispondiDomande.jar">
+      <element id="module-output" name="RispondiDomande" />
+    </root>
+  </artifact>
+</component>
